@@ -2,9 +2,9 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/seratch/deepl-for-slack/tree/master)
 
-### Features
+## Features
 
-#### Shortcut to run DeepL Translate API
+### Shortcut to run DeepL Translate API
 
 Slack users can run DeepL Translate API in a modal.
 
@@ -20,20 +20,24 @@ This works mostly the same as [reacjilator](https://github.com/slackapi/reacjila
 
 To run this app, the following accounts are required.
 
-* DeepL Pro (for Developers)
-* Slack workspace
-* Heroku
+* DeepL Pro (for Developers) account
+* Slack workspace and user account
+* Heroku account
 
 If you already have all of them, setting up this app requires only 5 minutes.
 
-### Create your DeepL Pro (for Developers) account
+## Set up
 
-* https://www.deepl.com/en/pro/
-* https://www.deepl.com/docs-api/
+### Create your DeepL Pro (for Developers) account
 
 * Select "for Developers" plan at https://www.deepl.com/pro/ (be careful not to choose any other)
 * Go to your [DeepL Pro Account](https://www.deepl.com/pro-account.html) page
 * Save the **Authentication Key for DeepL API** value
+
+Refer to the following resources for more details:
+
+* https://www.deepl.com/en/pro/
+* https://www.deepl.com/docs-api/
 
 ### Create your Slack App (Step 1)
 
@@ -58,16 +62,14 @@ If you already have all of them, setting up this app requires only 5 minutes.
 
 ### Deploy to Heroku
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/seratch/deepl-for-slack/tree/master)
+
 * Confirm [your billing settings](https://dashboard.heroku.com/account/billing)
-
-Deloy this app by just clicking [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/seratch/deepl-for-slack/tree/master)!
-
-or
-
 * Deploy this app with the following env variables
   * `SLACK_SIGNING_SECRET`: **Settings > Basic Information > App Credentials > Signing Secret** in the Slack app config page
   * `SLACK_BOT_TOKEN`: **Settings > Install App > Bot User OAuth Access Token** in the Slack app config page
   * `DEEPL_AUTH_KEY`: **Authentication Key for DeepL API** in the DeepL Pro account page
+* You may need to change the "Dyno Type" to enable the app
 
 ### Slack App (Step 2)
 
@@ -76,7 +78,7 @@ or
   * Set the Request URL to `https://{your app's Heroku domain}/slack/events`
   * Click **Subscribe to bot events**
   * Click **Add Bot User Event** button
-  * Add **reaction_added** event
+  * Add `reaction_added` event
   * Click **Save Changes** button at the bottom for sure
 
 * Go to **Features > Interactivity & Shortcuts** in the left pane
@@ -99,10 +101,14 @@ or
 * Go to your Slack workspace
 
 * Run `/invite @deepl_translation` in a channel
-* Post a message saing "In functional programming, a monad is a design pattern that allows structuring programs generically while automating away boilerplate code needed by the program logic. Monads achieve this by providing their own data type (a particular type for each type of monad), which represents a specific form of computation, along with one procedure to wrap values of any basic type within the monad (yielding a monadic value) and another to compose functions that output monadic values (called monadic functions)."
-* Add a reaction `:flag-jp` to the message
+* Post a message saying `In functional programming, a monad is a design pattern that allows structuring programs generically while automating away boilerplate code needed by the program logic. Monads achieve this by providing their own data type (a particular type for each type of monad), which represents a specific form of computation, along with one procedure to wrap values of any basic type within the monad (yielding a monadic value) and another to compose functions that output monadic values (called monadic functions).`
+* Add a reaction `:flag-jp:` to the message
 * Check a new message in its thread
 
 * Click **⚡ (Shortcuts)** button
 * Click **DeepL Translation**
 * Enter a text and the language on the modal
+
+### License 
+
+The MIT License
