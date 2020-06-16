@@ -1,0 +1,35 @@
+{
+  "name": "DeepL API App for Slack",
+  "description": "Slack app for DeepL Translate API users",
+  "repository": "https://github.com/seratch/deepl-for-slack",
+  "keywords": [
+    "Slack",
+    "Slack API",
+    "DeepL Pro",
+    "DeepL API",
+    "Heroku"
+  ],
+  "env": {
+    "SLACK_SIGNING_SECRET": {
+      "description": "Slack Signing Secret",
+      "value": "***"
+    },
+    "SLACK_BOT_TOKEN": {
+      "description": "Slack App Bot Token",
+      "value": "xoxb-**"
+    },
+    "DEEPL_AUTH_KEY": {
+      "description": "DeepL API Auth Key (https://www.deepl.com/pro-account.html)",
+      "value": "***"
+    },
+    "SLACK_LOG_LEVEL": {
+      "description": "Bolt App Log Level (debug/info/warn/error)",
+      "value": "info"
+    },
+    "SLACK_REQUEST_LOG_ENABLED": {
+      "description": "Slack App Request Log Feature (0: disabled, 1: enabled)",
+      "value": "0"
+    }
+  },
+  "image": "heroku/nodejs"
+}

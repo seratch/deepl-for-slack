@@ -1,0 +1,22 @@
+{
+  "name": "deepl-for-slack",
+  "version": "1.0.0",
+  "description": "DeepL integration for Slack",
+  "main": "lib/index.js",
+  "scripts": {
+    "start": "npm run build && node lib/index.js",
+    "local": "npm run build:live",
+    "build": "tsc -p .",
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts"
+  },
+  "author": "Kazuhiro Sera (@seratch)",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^2.1.1",
+    "@types/node": "^14.0.13",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}
