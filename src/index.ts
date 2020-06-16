@@ -2,14 +2,15 @@ import { loadEnv } from './dotenv';
 loadEnv();
 
 import { App } from '@slack/bolt';
-import { ConsoleLogger } from '@slack/logger';
-import { LogLevel } from '@slack/logger';
-import * as customMiddleware from './custom-middleware';
+import { ConsoleLogger, LogLevel } from '@slack/logger';
+import * as middleware from './custom-middleware';
+
+import { DeepLApi } from './deepl';
+import * as runner from './runnner';
+import { reactionToLang } from './languages';
+
 import { ConversationsRepliesResponse } from './types/conversations-replies';
 import { ReactionAddedEvent } from './types/reaction-added';
-import { DeepLApi } from './deepl';
-import { reactionToLang, langToReaction } from './languages';
-import * as runner from './runnner';
 
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
@@ -26,8 +27,7 @@ const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET
 });
-
-customMiddleware.enableAll(app);
+middleware.enableAll(app);
 
 app.shortcut("deepl-translation", async ({ ack, body, client }) => {
   await ack();
@@ -39,79 +39,13 @@ app.view("run-translation", async ({ ack, client, body }) => {
   const lang = body.view.state.values.lang.a.selected_option.value;
   await ack({
     response_action: "update",
-    view: {
-      "type": "modal",
-      "title": {
-        "type": "plain_text",
-        "text": "DeepL API Runner :books:"
-      },
-      "blocks": [
-        {
-          "type": "section",
-          "text": {
-            "type": "plain_text",
-            "text": `Translating the text into ${langToReaction[lang]} ...`
-          }
-        },
-        {
-          "type": "divider"
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "plain_text",
-            "text": text
-          }
-        }
-      ]
-    }
+    view: runner.buildLoadingView(lang, text)
   });
 
   const translatedText: string | null = await deepL.translate(text, lang);
   const modification = await client.views.update({
     view_id: body.view.id,
-    view: {
-      "type": "modal",
-      "callback_id": "new-runner",
-      "title": {
-        "type": "plain_text",
-        "text": "DeepL API Runner :books:"
-      },
-      "submit": {
-        "type": "plain_text",
-        "text": "Try Another"
-      },
-      "private_metadata": lang,
-      "blocks": [
-        {
-          "type": "section",
-          "text": {
-            "type": "plain_text",
-            "text": `Here is the same text in ${langToReaction[lang]}`
-          }
-        },
-        {
-          "type": "divider"
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "plain_text",
-            "text": translatedText || "(Failed to translate it...)"
-          }
-        },
-        {
-          "type": "divider"
-        },
-        {
-          "type": "section",
-          "text": {
-            "type": "plain_text",
-            "text": text
-          }
-        }
-      ]
-    }
+    view: runner.buildResultView(lang, text, translatedText || "(Failed to translate it...)")
   });
   if (logger.getLevel() <= LogLevel.DEBUG) {
     logger.debug(`chat.postMessage: ${JSON.stringify(modification)}`)
@@ -142,13 +76,15 @@ app.event("reaction_added", async ({ body, client, logger }) => {
   }
 
   const replies = await client.conversations.replies({
-    channel: channelId, ts: messageTs, inclusive: true
+    channel: channelId,
+    ts: messageTs,
+    inclusive: true
   }) as ConversationsRepliesResponse;
-  if (replies.messages) {
+
+  if (replies.messages && replies.messages.length > 0) {
     const message = replies.messages[0];
     if (message.text) {
-      // DeepL
-      const translatedText: string | null = await deepL.translate(message.text, lang);
+      const translatedText = await deepL.translate(message.text, lang);
       if (translatedText == null) {
         return;
       }

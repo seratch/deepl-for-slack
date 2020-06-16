@@ -78,3 +78,77 @@ export function buildNewModal(lang: string): View {
     ]
   };
 }
+
+export function buildLoadingView(lang: string, text: string): View {
+  return {
+    "type": "modal",
+    "title": {
+      "type": "plain_text",
+      "text": "DeepL API Runner :books:"
+    },
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": `Translating the text into ${langToReaction[lang]} ...`
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": text
+        }
+      }
+    ]
+  };
+}
+
+export function buildResultView(lang: string, sourceText: string, translatedText: string): View {
+  return {
+    "type": "modal",
+    "callback_id": "new-runner",
+    "title": {
+      "type": "plain_text",
+      "text": "DeepL API Runner :books:"
+    },
+    "submit": {
+      "type": "plain_text",
+      "text": "Try Another"
+    },
+    "private_metadata": lang,
+    "blocks": [
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": `Here is the same text in ${langToReaction[lang]}`
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": translatedText
+        }
+      },
+      {
+        "type": "divider"
+      },
+      {
+        "type": "section",
+        "text": {
+          "type": "plain_text",
+          "text": sourceText
+        }
+      }
+    ]
+  }
+}
