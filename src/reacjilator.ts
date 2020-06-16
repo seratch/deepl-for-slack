@@ -3,6 +3,21 @@ import { ReactionAddedEvent } from './types/reaction-added';
 import { reactionToLang } from './languages';
 import { WebClient } from '@slack/web-api';
 
+export function lang(event: ReactionAddedEvent): string | null {
+  console.log(event);
+  const reactionName = event.reaction;
+  if (reactionName.match(/flag-/)) { // flag-***
+    const matched = reactionName.match(/(?!flag-\b)\b\w+/);
+    if (matched != null) {
+      const country = matched[0];
+      return reactionToLang[country];
+    }
+  } else { // jp, fr, etc.
+    return reactionToLang[reactionName];
+  }
+  return null;
+}
+
 export async function repliesInThread(client: WebClient, channel: string, ts: string): Promise<ConversationsRepliesResponse> {
   return await client.conversations.replies({
     channel,
@@ -21,10 +36,6 @@ export function isAlreadyPosted(replies: ConversationsRepliesResponse, translate
     }
   }
   return false;
-}
-
-export function lang(event: ReactionAddedEvent): string | null {
-  return reactionToLang[event.reaction];
 }
 
 export async function sayInThread(client: WebClient, channel: string, text: string, message: Message) {
