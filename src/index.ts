@@ -7,10 +7,8 @@ import * as middleware from './custom-middleware';
 
 import { DeepLApi } from './deepl';
 import * as runner from './runnner';
-import { reactionToLang } from './languages';
+import * as reacjilator from './reacjilator';
 
-import { ConversationsRepliesResponse } from './types/conversations-replies';
-import { ReactionAddedEvent } from './types/reaction-added';
 
 const logLevel = process.env.SLACK_LOG_LEVEL as LogLevel || LogLevel.INFO;
 const logger = new ConsoleLogger();
@@ -29,6 +27,10 @@ const app = new App({
 });
 middleware.enableAll(app);
 
+// -----------------------------
+// shortcut
+// -----------------------------
+
 app.shortcut("deepl-translation", async ({ ack, body, client }) => {
   await ack();
   await runner.openModal(client, body.trigger_id);
@@ -37,19 +39,18 @@ app.shortcut("deepl-translation", async ({ ack, body, client }) => {
 app.view("run-translation", async ({ ack, client, body }) => {
   const text = body.view.state.values.text.a.value;
   const lang = body.view.state.values.lang.a.selected_option.value;
+
   await ack({
     response_action: "update",
     view: runner.buildLoadingView(lang, text)
   });
 
   const translatedText: string | null = await deepL.translate(text, lang);
-  const modification = await client.views.update({
+
+  await client.views.update({
     view_id: body.view.id,
     view: runner.buildResultView(lang, text, translatedText || "(Failed to translate it...)")
   });
-  if (logger.getLevel() <= LogLevel.DEBUG) {
-    logger.debug(`chat.postMessage: ${JSON.stringify(modification)}`)
-  }
 });
 
 app.view("new-runner", async ({ body, ack }) => {
@@ -59,7 +60,13 @@ app.view("new-runner", async ({ body, ack }) => {
   })
 })
 
-app.event("reaction_added", async ({ body, client, logger }) => {
+// -----------------------------
+// reacjilator
+// -----------------------------
+
+import { ReactionAddedEvent } from './types/reaction-added';
+
+app.event("reaction_added", async ({ body, client }) => {
   const event = body.event as ReactionAddedEvent;
   if (event.item['type'] !== 'message') {
     return;
@@ -69,18 +76,12 @@ app.event("reaction_added", async ({ body, client, logger }) => {
   if (!channelId || !messageTs) {
     return;
   }
-  const reaction = event.reaction;
-  const lang: string = reactionToLang[reaction];
+  const lang = reacjilator.lang(event);
   if (!lang) {
     return;
   }
 
-  const replies = await client.conversations.replies({
-    channel: channelId,
-    ts: messageTs,
-    inclusive: true
-  }) as ConversationsRepliesResponse;
-
+  const replies = await reacjilator.repliesInThread(client, channelId, messageTs);
   if (replies.messages && replies.messages.length > 0) {
     const message = replies.messages[0];
     if (message.text) {
@@ -88,27 +89,17 @@ app.event("reaction_added", async ({ body, client, logger }) => {
       if (translatedText == null) {
         return;
       }
-      let alreadyPosted: boolean = false;
-      for (const messageInThread of replies.messages) {
-        if (!alreadyPosted && messageInThread.text && messageInThread.text === translatedText) {
-          alreadyPosted = true;
-          break;
-        }
-      }
-      if (alreadyPosted) {
+      if (reacjilator.isAlreadyPosted(replies, translatedText)) {
         return;
       }
-      const postedMessage = await client.chat.postMessage({
-        channel: channelId,
-        text: translatedText,
-        thread_ts: message.thread_ts ? message.thread_ts : message.ts
-      });
-      if (logger.getLevel() <= LogLevel.DEBUG) {
-        logger.debug(`chat.postMessage: ${JSON.stringify(postedMessage)}`)
-      }
+      await reacjilator.sayInThread(client, channelId, translatedText, message);
     }
   }
 });
+
+// -----------------------------
+// starting the app
+// -----------------------------
 
 (async () => {
   await app.start(process.env.PORT || 3000);
