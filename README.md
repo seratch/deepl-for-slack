@@ -8,13 +8,13 @@
 
 Slack users can run DeepL Translate API in a modal.
 
-![Shortcuts](https://raw.githubusercontent.com/seratch/deepl-for-slack/master/assets/shortcut.gif)
+<img src="https://user-images.githubusercontent.com/19658/84773721-cb505f80-b017-11ea-8c41-aed57012ab8b.gif" height="500">
 
 ### Post a translated text in thread
 
 This works mostly the same as [reacjilator](https://github.com/slackapi/reacjilator).
 
-![Reacjilator](https://raw.githubusercontent.com/seratch/deepl-for-slack/master/assets/reacjilator.gif)
+<img src="https://user-images.githubusercontent.com/19658/84773773-dc996c00-b017-11ea-9022-017492a7c9df.gif" height="500">
 
 ## Prerequisites
 
