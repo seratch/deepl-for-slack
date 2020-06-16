@@ -11,7 +11,7 @@ export class DeepLApi {
     this.logger = logger;
     this.axiosInstance = axios.create({
       baseURL: 'https://api.deepl.com/v2',
-      timeout: 3000,
+      timeout: 30000,
     });
   }
 
