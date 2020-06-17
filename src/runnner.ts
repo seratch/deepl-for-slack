@@ -3,14 +3,15 @@ import { WebClient } from '@slack/web-api';
 import { Option } from '@slack/types';
 import { langToReaction, langToName } from './languages';
 
-const lanaguageOptions: Option[] = Object.keys(langToReaction).map(lang => {
+const orderedLangNames = (process.env.DEEPL_RUNNNER_LANGUAGES || "en,ja,zh,de,fr,it,es,nl,pl,pt,ru").split(",");
+const lanaguageOptions: Option[] = orderedLangNames.filter(l => langToReaction[l]).map(lang => {
   return {
     "text": {
       "type": "plain_text",
       "text": `${langToReaction[lang]} ${langToName[lang]}`
     },
     "value": lang
-  }
+  };
 });
 
 export async function openModal(client: WebClient, triggerId: string) {

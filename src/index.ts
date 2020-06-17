@@ -49,7 +49,7 @@ app.view("run-translation", async ({ ack, client, body }) => {
 
   await client.views.update({
     view_id: body.view.id,
-    view: runner.buildResultView(lang, text, translatedText || "(Failed to translate it...)")
+    view: runner.buildResultView(lang, text, translatedText || ":x: Failed to translate it for some reason")
   });
 });
 

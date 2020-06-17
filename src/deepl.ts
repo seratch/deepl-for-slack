@@ -31,8 +31,11 @@ export class DeepLApi {
       if (response.data.translations && response.data.translations.length > 0) {
         return response.data.translations[0].text;
       } else {
-        return null;
+        return ":x: Failed to translate it due to an unexpected response from DeepL API";
       }
+    }).catch(error => {
+      this.logger.error(`Failed to translate - text: ${text} error: ${error}`);
+      return `:x: Failed to translate it due to ${error}`;
     });
   }
 }
