@@ -22,7 +22,7 @@
       "description": "DeepL API Auth Key (https://www.deepl.com/pro-account.html)",
       "value": "***"
     },
-    "DEEPL_RUNNNER_LANGUAGES": {
+    "DEEPL_RUNNER_LANGUAGES": {
       "description": "Enabled target languages in modals (https://www.deepl.com/docs-api/translating-text/request/)",
       "value": "en,ja,zh,de,fr,it,es,nl,pl,pt,ru"
     },
