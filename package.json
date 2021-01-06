@@ -12,10 +12,10 @@
   "author": "Kazuhiro Sera (@seratch)",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^2.1.1",
-    "@types/node": "^14.0.13",
+    "@slack/bolt": "^2.6.0",
+    "@types/node": "^14.14.20",
     "dotenv": "^8.2.0",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.6",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5"
   }
