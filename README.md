@@ -90,7 +90,7 @@ Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/mast
 * Check a new message in its thread
 
 * Click **⚡ (Shortcuts)** button
-* Click **DeepL Translation**
+* Click **Open DeepL Tool**
 * Enter a text and the language on the modal
 
 ### License 
