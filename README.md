@@ -39,16 +39,14 @@ Refer to the following resources for more details:
 * https://www.deepl.com/en/pro/
 * https://www.deepl.com/docs-api/
 
-### Create your Slack App (Step 1)
+### Create your Slack App
 
-* Create a new Slack app [here](https://api.slack.com/apps?new_app=1)
-  * **App Name**: "DeepL Translation"
-  * **Development Slack Workspace**: Choose the workspace you use this app
+Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/master/app-manifest.yml) to configure a new app!
 
-* Go to **Features > OAuth & Permissions** in the left pane
-  * Scroll down to **Scopes > Bot Token Scopes** section
-  * Click **Add an OAuth Scope** button
-  * Add `channels:history`, `chat:write`, `groups:history`, `reactions:read`
+<img width="400" src="https://user-images.githubusercontent.com/19658/121115984-cef47c00-c850-11eb-9d7e-dbd80407ac9a.png">
+<img width="400" src="https://user-images.githubusercontent.com/19658/121115976-cc922200-c850-11eb-8e23-1054c48b54d0.png">
+<img width="400" src="https://user-images.githubusercontent.com/19658/121115986-cf8d1280-c850-11eb-8f7f-9d59112df42b.png">
+<img width="400" src="https://user-images.githubusercontent.com/19658/121115989-d025a900-c850-11eb-9cb7-35fc979a81f8.png">
 
 * Got to **Settings > Install App** in the left pane
   * Click **Install App to Workspace** button
@@ -74,27 +72,12 @@ Refer to the following resources for more details:
 ### Slack App (Step 2)
 
 * Go to **Features > Event Subscriptions** in the left pane
-  * Turn on **Enable Events**
   * Set the Request URL to `https://{your app's Heroku domain}/slack/events`
-  * Click **Subscribe to bot events**
-  * Click **Add Bot User Event** button
-  * Add `reaction_added` event
   * Click **Save Changes** button at the bottom for sure
 
 * Go to **Features > Interactivity & Shortcuts** in the left pane
-  * Turn on **Interactivity**
   * Set the Request URL to `https://{your app's Heroku domain}/slack/events`
-  * Scroll down to **Shortcuts** section
-  * Click **Create New Shortcut** button
-  * Choose **Global** and clikc **Next** button
-  * **Name**: "DeepL Translation"
-  * **Short Description**: "Run DeepL Translate API"
-  * Callback ID: "deepl-translation"
   * Click **Save Changes** button at the bottom for sure
-
-* Got to **Settings > Install App** in the left pane
-  * Click **Install App to Workspace** button
-  * Click **Allow** button in the OAuth confirmation page
 
 ### Verify it works in Slack
 

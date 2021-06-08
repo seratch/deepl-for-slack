@@ -1,0 +1,40 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: DeepL Translation App
+  description: DeepL Translation App
+  background_color: "#4e6fcf"
+features:
+  app_home:
+    home_tab_enabled: false
+    messages_tab_enabled: false
+    messages_tab_read_only_enabled: false
+  bot_user:
+    display_name: deepl-translation-app
+    always_online: true
+  shortcuts:
+    - name: Open DeepL Tool
+      type: global
+      callback_id: deepl-translation
+      description: Translate text using DeepL
+oauth_config:
+  scopes:
+    bot:
+      - commands
+      - channels:history
+      - chat:write
+      - chat:write.public
+      - groups:history
+      - reactions:read
+settings:
+  event_subscriptions:
+    request_url: https://change-this-later.example.com/slack/events
+    bot_events:
+      - reaction_added
+  interactivity:
+    is_enabled: true
+    request_url: https://change-this-later.example.com/slack/events
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+
