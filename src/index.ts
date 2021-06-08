@@ -22,8 +22,8 @@ const deepL = new DeepLApi(deepLAuthKey, logger);
 
 const app = new App({
   logger,
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET
+  token: process.env.SLACK_BOT_TOKEN!!,
+  signingSecret: process.env.SLACK_SIGNING_SECRET!!
 });
 middleware.enableAll(app);
 
@@ -37,8 +37,8 @@ app.shortcut("deepl-translation", async ({ ack, body, client }) => {
 });
 
 app.view("run-translation", async ({ ack, client, body }) => {
-  const text = body.view.state.values.text.a.value;
-  const lang = body.view.state.values.lang.a.selected_option.value;
+  const text = body.view.state.values.text.a.value!;
+  const lang = body.view.state.values.lang.a.selected_option!.value;
 
   await ack({
     response_action: "update",
@@ -102,7 +102,7 @@ app.event("reaction_added", async ({ body, client }) => {
 // -----------------------------
 
 (async () => {
-  await app.start(process.env.PORT || 3000);
+  await app.start(Number(process.env.PORT) || 3000);
   console.log('⚡️ Bolt app is running!');
 })();
 

@@ -9,8 +9,10 @@ export class DeepLApi {
   constructor(authKey: string, logger: Logger) {
     this.authKey = authKey;
     this.logger = logger;
+    const usingFreePlan = process.env.DEEPL_FREE_API_PLAN === "1";
+    const apiSubdomain = usingFreePlan ? 'api-free' : 'api';
     this.axiosInstance = axios.create({
-      baseURL: 'https://api.deepl.com/v2',
+      baseURL: `https://${apiSubdomain}.deepl.com/v2`,
       timeout: 30000,
     });
   }

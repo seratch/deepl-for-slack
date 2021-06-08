@@ -4,7 +4,6 @@ import { reactionToLang } from './languages';
 import { WebClient } from '@slack/web-api';
 
 export function lang(event: ReactionAddedEvent): string | null {
-  console.log(event);
   const reactionName = event.reaction;
   if (reactionName.match(/flag-/)) { // flag-***
     const matched = reactionName.match(/(?!flag-\b)\b\w+/);

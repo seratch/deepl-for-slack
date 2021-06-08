@@ -22,6 +22,10 @@
       "description": "DeepL API Auth Key (https://www.deepl.com/pro-account.html)",
       "value": "***"
     },
+    "DEEPL_FREE_API_PLAN": {
+      "description": "Set to 1 If you use the Free API plan (0: Pro, 1: Free)",
+      "value": "0"
+    },
     "DEEPL_RUNNER_LANGUAGES": {
       "description": "Enabled target languages in modals (https://www.deepl.com/docs-api/translating-text/request/)",
       "value": "en,ja,zh,de,fr,it,es,nl,pl,pt,ru"
