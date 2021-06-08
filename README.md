@@ -67,6 +67,7 @@ Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/mast
   * `SLACK_SIGNING_SECRET`: **Settings > Basic Information > App Credentials > Signing Secret** in the Slack app config page
   * `SLACK_BOT_TOKEN`: **Settings > Install App > Bot User OAuth Access Token** in the Slack app config page
   * `DEEPL_AUTH_KEY`: **Authentication Key for DeepL API** in the DeepL Pro account page
+  * `DEEPL_FREE_API_PLAN`: Set to "1" if you are using the DeepL API Free Plan (the default is "0" for Pro Plan)
 * You may need to change the "Dyno Type" to enable the app
 
 ### Slack App (Step 2)
