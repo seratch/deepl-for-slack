@@ -96,3 +96,9 @@ Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/mast
 ### License 
 
 The MIT License
+
+### Related Projects
+
+If you are looking for more functionalities, take a look at the following awesome projects:
+
+* https://github.com/monstar-lab-oss/deepl-for-slack-elixir
