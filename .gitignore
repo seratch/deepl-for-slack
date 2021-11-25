@@ -5,3 +5,4 @@ jspm_packages
 .env*
 lib/
 .vscode/
+.DS_Store
