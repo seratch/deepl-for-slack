@@ -21,10 +21,8 @@ features:
 oauth_config:
   scopes:
     bot:
-      - commands
       - channels:history
       - chat:write
-      - chat:write.public
       - groups:history
       - reactions:read
 settings:
