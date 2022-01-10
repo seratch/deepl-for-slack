@@ -11,8 +11,6 @@ export function lang(event: ReactionAddedEvent): string | null {
       const country = matched[0];
       return reactionToLang[country];
     }
-  } else { // jp, fr, etc.
-    return reactionToLang[reactionName];
   }
   return null;
 }
