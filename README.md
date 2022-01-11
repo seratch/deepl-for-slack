@@ -66,6 +66,8 @@ Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/mast
 * Deploy this app with the following env variables
   * `SLACK_SIGNING_SECRET`: **Settings > Basic Information > App Credentials > Signing Secret** in the Slack app config page
   * `SLACK_BOT_TOKEN`: **Settings > Install App > Bot User OAuth Access Token** in the Slack app config page
+  * `SLACK_AUTO_TRANSLATE`: Set to "1" if you want to automatically translate between two languages
+  * `SLACK_AUTO_TRANSLATE_LANG`: Set to exactly two languages, e.g. "en,ja"
   * `DEEPL_AUTH_KEY`: **Authentication Key for DeepL API** in the DeepL Pro account page
   * `DEEPL_FREE_API_PLAN`: Set to "1" if you are using the DeepL API Free Plan (the default is "0" for Pro Plan)
 * You may need to change the "Dyno Type" to enable the app
@@ -92,6 +94,15 @@ Use the [App Manifest file](https://github.com/seratch/deepl-for-slack/blob/mast
 * Click **⚡ (Shortcuts)** button
 * Click **Open DeepL Tool**
 * Enter a text and the language on the modal
+
+### Note on auto translate feature
+* If activated the slack integration when added to a channel will automatically translate any incoming message.
+* It will not translate messages from other integrations.
+* As DeepL API does not support a target language based on DeepL's source language guess, it is unavoidable
+that some messages are translated twice (using up more cloud credits).
+* The bot can detect Japanese language based on the character set and `en,ja` will mostly not be translated twice.
+However `en,fr` will by default translate to English to French. If the guess was wrong, it will translate again.
+If you write more French on Slack, it's better to put `fr,en`.
 
 ### License 
 
