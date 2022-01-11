@@ -37,6 +37,14 @@
     "SLACK_REQUEST_LOG_ENABLED": {
       "description": "Slack App Request Log Feature (0: disabled, 1: enabled)",
       "value": "0"
+    },
+    "SLACK_AUTO_TRANSLATE": {
+      "description": "Automatically translate between two languages (0: disabled, 1: enabled)",
+      "value": "0"
+    },
+    "SLACK_AUTO_TRANSLATE_LANG": {
+      "description": "If SLACK_AUTO_TRANSLATE is enabled it will automatically translate between these two languages",
+      "value": "en,ja"
     }
   },
   "image": "heroku/nodejs"
