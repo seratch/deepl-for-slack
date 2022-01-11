@@ -64,7 +64,7 @@ app.view("new-runner", async ({ body, ack }) => {
 // reacjilator
 // -----------------------------
 
-import { ReactionAddedEvent } from './types/reaction-added';
+import { ReactionAddedEvent, MessageEvent } from './types/reaction-added';
 
 app.event("reaction_added", async ({ body, client }) => {
   const event = body.event as ReactionAddedEvent;
@@ -97,6 +97,37 @@ app.event("reaction_added", async ({ body, client }) => {
   }
 });
 
+if (process.env.SLACK_AUTO_TRANSLATE === "1") {
+  app.message(async ({body, client}) => {
+
+    const event = body.event as MessageEvent;
+    if (event.subtype && event.subtype != 'message_replied' && event.subtype != 'me_message') {
+      console.debug(`Ignoring message with subtype ${event.subtype} from ${event.user}`)
+      return;
+    }
+    const channelId = event.channel;
+    const messageTs = event.ts;
+    if (!channelId || !messageTs) {
+      return;
+    }
+
+    const replies = await reacjilator.repliesInThread(client, channelId, messageTs);
+    if (replies.messages && replies.messages.length > 0) {
+      const message = replies.messages[0];
+      if (message.text) {
+        const translatedText = await deepL.autoTranslate(message.text);
+        if (translatedText == null) {
+          return;
+        }
+        if (reacjilator.isAlreadyPosted(replies, translatedText)) {
+          return;
+        }
+        await reacjilator.sayInThread(client, channelId, translatedText, message);
+      }
+    }
+  });
+}
+
 // -----------------------------
 // starting the app
 // -----------------------------
@@ -105,4 +136,3 @@ app.event("reaction_added", async ({ body, client }) => {
   await app.start(Number(process.env.PORT) || 3000);
   console.log('⚡️ Bolt app is running!');
 })();
-

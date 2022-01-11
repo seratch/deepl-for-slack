@@ -14,3 +14,12 @@ export interface Item {
   file?: string;
   file_comment?: string;
 }
+
+export interface MessageEvent {
+  type: 'message';
+  subtype?: string;
+  channel: string;
+  user: string;
+  text: string;
+  ts: string;
+}
