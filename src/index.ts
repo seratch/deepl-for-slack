@@ -97,7 +97,7 @@ app.event("reaction_added", async ({ body, client }) => {
   }
 });
 
-if (process.env.SLACK_AUTO_TRANSLATE === "1") {
+if (process.env.SLACK_AUTO_TRANSLATION_ENABLED === "1") {
   app.message(async ({body, client}) => {
 
     const event = body.event as MessageEvent;

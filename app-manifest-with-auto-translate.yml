@@ -32,6 +32,8 @@ settings:
     request_url: https://change-this-later.example.com/slack/events
     bot_events:
       - reaction_added
+      - message.channels
+      - message.groups
   interactivity:
     is_enabled: true
     request_url: https://change-this-later.example.com/slack/events
