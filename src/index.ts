@@ -1,7 +1,7 @@
 import { loadEnv } from './dotenv';
 loadEnv();
 
-import { App } from '@slack/bolt';
+import {App, GenericMessageEvent} from '@slack/bolt';
 import { ConsoleLogger, LogLevel } from '@slack/logger';
 import * as middleware from './custom-middleware';
 
@@ -64,7 +64,7 @@ app.view("new-runner", async ({ body, ack }) => {
 // reacjilator
 // -----------------------------
 
-import { ReactionAddedEvent, MessageEvent } from './types/reaction-added';
+import { ReactionAddedEvent } from './types/reaction-added';
 
 app.event("reaction_added", async ({ body, client }) => {
   const event = body.event as ReactionAddedEvent;
