@@ -99,9 +99,11 @@ app.event("reaction_added", async ({ body, client }) => {
 
 if (process.env.SLACK_AUTO_TRANSLATION_ENABLED === "1") {
   app.message(async ({body, client}) => {
-
-    const event = body.event as MessageEvent;
-    if (event.subtype && event.subtype != 'message_replied' && event.subtype != 'me_message') {
+    const event = body.event as GenericMessageEvent;
+    if (event.subtype &&
+        event.subtype != 'message_replied' &&
+        event.subtype != 'me_message' &&
+        event.subtype != 'file_share') {
       console.debug(`Ignoring message with subtype ${event.subtype} from ${event.user}`)
       return;
     }
