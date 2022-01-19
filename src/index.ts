@@ -104,7 +104,7 @@ if (process.env.SLACK_AUTO_TRANSLATION_ENABLED === "1") {
         event.subtype != 'message_replied' &&
         event.subtype != 'me_message' &&
         event.subtype != 'file_share') {
-      console.debug(`Ignoring message with subtype ${event.subtype} from ${event.user}`)
+      console.debug(`Ignoring message with subtype ${event.subtype} from ${event.user}`);
       return;
     }
     const channelId = event.channel;
