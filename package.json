@@ -12,7 +12,7 @@
   "author": "Kazuhiro Sera (@seratch)",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^3.8.1",
+    "@slack/bolt": "^3.9.0",
     "@types/node": "^14.17.34",
     "axios": "^0.21.4",
     "dotenv": "^8.6.0",
