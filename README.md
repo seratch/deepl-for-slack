@@ -2,6 +2,8 @@
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/seratch/deepl-for-slack/tree/master)
 
+If the above button does not work for you (due to "We couldn't deploy your app because the source code violates the Salesforce Acceptable Use and External-Facing Services Policy." error), you can fork this repository and use your own URL like `https://heroku.com/deploy?template=https://github.com/{your GitHub account here}/deepl-for-slack/tree/master`.
+
 ## Features
 
 ### Shortcut to run DeepL Translate API
