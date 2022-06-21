@@ -103,6 +103,7 @@ if (process.env.SLACK_AUTO_TRANSLATION_ENABLED === "1") {
     if (event.subtype &&
         event.subtype != 'message_replied' &&
         event.subtype != 'me_message' &&
+        event.subtype != 'thread_broadcast' &&
         event.subtype != 'file_share') {
       console.debug(`Ignoring message with subtype ${event.subtype} from ${event.user}`);
       return;
