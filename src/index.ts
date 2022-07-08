@@ -45,7 +45,8 @@ app.view("run-translation", async ({ ack, client, body }) => {
     view: runner.buildLoadingView(lang, text)
   });
 
-  const translatedText: string | null = await deepL.translate(text, lang);
+  let translatedText: string | null = await deepL.translate(text, lang);
+  translatedText = translatedText ? translatedText.replaceAll("@", "@ ") :  translatedText;
 
   await client.views.update({
     view_id: body.view.id,
@@ -105,4 +106,3 @@ app.event("reaction_added", async ({ body, client }) => {
   await app.start(Number(process.env.PORT) || 3000);
   console.log('⚡️ Bolt app is running!');
 })();
-
