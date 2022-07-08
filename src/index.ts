@@ -86,7 +86,7 @@ app.event("reaction_added", async ({ body, client }) => {
   if (replies.messages && replies.messages.length > 0) {
     const message = replies.messages[0];
     if (message.text) {
-      let translatedText: string | null = await deepL.translate(text, lang);
+      let translatedText: string | null = await deepL.translate(message.text, lang);
       translatedText = translatedText ? translatedText.replaceAll("@", "@ ") :  translatedText;
       if (translatedText == null) {
         return;
