@@ -6,3 +6,4 @@ jspm_packages
 lib/
 .vscode/
 .DS_Store
+.idea/**
