@@ -46,7 +46,7 @@ app.view("run-translation", async ({ ack, client, body }) => {
   });
 
   let translatedText: string | null = await deepL.translate(text, lang);
-  const pattern = /<@.+?>/g;  // /g global flag is required for replaceAll in typescript.
+  const pattern = /<@.+?>/g || /<!.+?>/g || /<#.+?>/g;  // /g global flag is required for replaceAll in typescript.
   translatedText = translatedText ? translatedText.replaceAll(pattern, "") :  translatedText;
 
   await client.views.update({
@@ -90,7 +90,7 @@ app.event("reaction_added", async ({ body, client }) => {
       let translatedText: string | null = await deepL.translate(message.text, lang);
       // Slack notification pattern is <@U0XXXXXXXXX>
       // we want to replace this with blank string to prevent notifications
-      const pattern = /<@.+?>/g; // /g global flag is required for replaceAll in typescript.
+      const pattern = /<@.+?>/g || /<!.+?>/g || /<#.+?>/g; // /g global flag is required for replaceAll in typescript.
       translatedText = translatedText ? translatedText.replaceAll(pattern, "") :  translatedText;
       if (translatedText == null) {
         return;
