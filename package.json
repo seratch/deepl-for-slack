@@ -12,12 +12,14 @@
   "author": "Kazuhiro Sera (@seratch)",
   "license": "MIT",
   "dependencies": {
-    "@slack/bolt": "^3.9.0",
-    "@types/node": "^14.17.34",
+    "@slack/bolt": "^3.12.1",
     "axios": "^0.21.4",
     "dotenv": "^8.6.0",
-    "nodemon": "^2.0.12",
     "ts-node": "^8.10.2",
     "typescript": "^4.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.16",
+    "nodemon": "^2.0.19"
   }
 }

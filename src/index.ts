@@ -21,9 +21,11 @@ if (!deepLAuthKey) {
 const deepL = new DeepLApi(deepLAuthKey, logger);
 
 const app = new App({
+  logLevel,
   logger,
   token: process.env.SLACK_BOT_TOKEN!!,
-  signingSecret: process.env.SLACK_SIGNING_SECRET!!
+  signingSecret: process.env.SLACK_SIGNING_SECRET!!,
+  deferInitialization: true,
 });
 middleware.enableAll(app);
 
@@ -102,7 +104,13 @@ app.event("reaction_added", async ({ body, client }) => {
 // -----------------------------
 
 (async () => {
-  await app.start(Number(process.env.PORT) || 3000);
-  console.log('⚡️ Bolt app is running!');
+  try {
+    await app.init();
+    await app.start(Number(process.env.PORT) || 3000);
+    console.log('⚡️ Bolt app is running!');
+  } catch (e) {
+    console.log(e);
+    process.exit(1);
+  }
 })();
 
