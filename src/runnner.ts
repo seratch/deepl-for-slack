@@ -1,9 +1,8 @@
 import { PlainTextOption, View } from '@slack/types';
 import { WebClient } from '@slack/web-api';
-import { Option } from '@slack/types';
 import { langToReaction, langToName } from './languages';
 
-const orderedLangNames = (process.env.DEEPL_RUNNER_LANGUAGES || "en,ja,zh,de,fr,it,es,nl,pl,pt,ru").split(",");
+const orderedLangNames = (process.env.DEEPL_RUNNER_LANGUAGES || "en,ja,zh,de,fr,it,es,nl,pl,pt,ru,bg,cs,da,el,et,fi,hu,id,lt,ro,sk,sl,sv,tr,uk").split(",");
 const lanaguageOptions: PlainTextOption[] = orderedLangNames.filter(l => langToReaction[l]).map(lang => {
   return {
     "text": {
