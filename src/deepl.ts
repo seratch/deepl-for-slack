@@ -22,12 +22,12 @@ export class DeepLApi {
       url: "/translate",
       data: qs.stringify({
         auth_key: this.authKey,
-        text: text.replace(/:([a-z0-9_-]+):/g, function(i, match) {
+        text: text.replace(/:([a-z0-9_-]+):/g, function(i: any, match: string) {
           return '<emoji>' + match + '</emoji>';
         }).replace(/<!subteam\^([A-Za-z0-9]+)>/g, ''),
         target_lang: targetLanguage.toUpperCase(),
-        tag_handling='xml',
-        ignore_tags='emoji'
+        tag_handling: 'xml',
+        ignore_tags: 'emoji'
       }),
       headers: {
         "content-type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -35,9 +35,9 @@ export class DeepLApi {
     }).then(response => {
       this.logger.debug(response.data);
       if (response.data.translations && response.data.translations.length > 0) {
-        return response.data.translations[0].text.replace(/<emoji>([a-z0-9_-]+)<\/emoji>/g, function(i, match) {
+        return response.data.translations[0].text.replace(/<emoji>([a-z0-9_-]+)<\/emoji>/g, function(i: any, match: string) {
           return ':' + match + ':';
-        }).replace(/<!(here|channel|everyone)>/g, function(i, match) {
+        }).replace(/<!(here|channel|everyone)>/g, function(i: any, match: string) {
           return '@' + match;
         });
       } else {
