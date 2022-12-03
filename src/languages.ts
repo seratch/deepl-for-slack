@@ -139,6 +139,7 @@ export const reactionToLang: any = {
   "li": "de",
   "lr": "en",
   "mc": "fr",
+  "mf": "fr",
   "ml": "fr",
   "mp": "en",
   "mq": "fr",
