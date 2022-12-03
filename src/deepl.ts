@@ -24,7 +24,7 @@ export class DeepLApi {
         auth_key: this.authKey,
         text: text.replace(/:([a-z0-9_-]+):/g, function(i, match) {
           return '<emoji>' + match + '</emoji>';
-        }),
+        }).replace(/<!subteam\^([A-Za-z0-9]+)>/g, ''),
         target_lang: targetLanguage.toUpperCase(),
         tag_handling='xml',
         ignore_tags='emoji'
@@ -37,6 +37,8 @@ export class DeepLApi {
       if (response.data.translations && response.data.translations.length > 0) {
         return response.data.translations[0].text.replace(/<emoji>([a-z0-9_-]+)<\/emoji>/g, function(i, match) {
           return ':' + match + ':';
+        }).replace(/<!(here|channel|everyone)>/g, function(i, match) {
+          return '@' + match;
         });
       } else {
         return ":x: Failed to translate it due to an unexpected response from DeepL API";
