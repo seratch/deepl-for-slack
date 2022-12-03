@@ -36,7 +36,7 @@ export class DeepLApi {
           if(match.match(/^.*?\|.*$/)) {
             const matched = match.match(/^(.*?)\|(.*)$/);
             if (matched != null) {
-              return '<urltext><url>' + matched[1] + '</url>' + matched[2] + '</urltext>';
+              return matched[2] + ' <url>' + matched[1] + '|(link)</url>';
             }
             return '';
           } else {
@@ -57,12 +57,6 @@ export class DeepLApi {
       if (response.data.translations && response.data.translations.length > 0) {
         return response.data.translations[0].text.replace(/<emoji>(.*?)<\/emoji>/g, function(i: any, match: string) {
    return ':' + match + ':';
-}).replace(/(<urltext><url>(?:.*?)<\/url>(?:.*?)<\/urltext>)/g, function(i: any, match: string) {
-  const matched = match.match(/<urltext><url>(.*?)<\/url>(.*)<\/urltext>/);
-  if (matched != null) {
-    return '<' + matched[1] + '|' + matched[2] + '>';
-  }
-  return '';
 }).replace(/<url>(.*?)<\/url>/g, function(i: any, match: string) {
    return '<' + match + '>';
 }).replace(/<ignore>(.*?)<\/ignore>/g, function(i: any, match: string) {
