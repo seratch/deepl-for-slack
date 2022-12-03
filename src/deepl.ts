@@ -56,18 +56,18 @@ export class DeepLApi {
       this.logger.debug(response.data);
       if (response.data.translations && response.data.translations.length > 0) {
         return response.data.translations[0].text.replace(/<emoji>(.*?)<\/emoji>/g, function(i: any, match: string) {
-      return ':' + match + ':';
-    }).replace(/<url>(.*?)<\/url>/g, function(i: any, match: string) {
-      return '<' + match + '>';
-    }).replace(/(<a href="(?:.*?)">(?:.*?)<\/a>)/g, function(i: any, match: string) {
-      const matched = match.match(/<a href="(.*?)">(.*?)<\/a>/);
-      if (matched != null) {
-        return '<' + matched[1] + '|' + matched[2] + '>';
-      }
-      return '';
-    }).replace(/<ignore>(.*?)<\/ignore>/g, function(i: any, match: string) {
-      return match;
-    });
+          return ':' + match + ':';
+        }).replace(/<url>(.*?)<\/url>/g, function(i: any, match: string) {
+          return '<' + match + '>';
+        }).replace(/(<a href="(?:.*?)">(?:.*?)<\/a>)/g, function(i: any, match: string) {
+          const matched = match.match(/<a href="(.*?)">(.*?)<\/a>/);
+          if (matched != null) {
+            return '<' + matched[1] + '|' + matched[2] + '>';
+          }
+          return '';
+        }).replace(/<ignore>(.*?)<\/ignore>/g, function(i: any, match: string) {
+          return match;
+        });
       } else {
         return ":x: Failed to translate it due to an unexpected response from DeepL API";
       }
