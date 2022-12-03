@@ -27,12 +27,18 @@ export class DeepLApi {
             return '';
           }
           if(match.match(/^!/)) {
-            let matched = match.match(/^!([a-z]+)$/)[1];
-            return '<ignore>@' + matched + '</ignore>';
+            const matched = match.match(/^!([a-z]+)$/);
+            if (matched != null) {
+              return '<ignore>@' + matched[1] + '</ignore>';
+            }
+            return '';
           }
           if(match.match(/^.*?\|.*$/)) {
-            let matched = match.match(/^(.*?)\|(.*)$/);
-            return '<urltext><url>' + matched[1] + '</url>' + matched[2] + '</urltext>';
+            const matched = match.match(/^(.*?)\|(.*)$/);
+            if (matched != null) {
+              return '<urltext><url>' + matched[1] + '</url>' + matched[2] + '</urltext>';
+            }
+            return '';
           } else {
             return '<url>' + match + '</url>';
           }
@@ -52,8 +58,11 @@ export class DeepLApi {
         return response.data.translations[0].text.replace(/<emoji>(.*?)<\/emoji>/g, function(i: any, match: string) {
    return ':' + match + ':';
 }).replace(/(<urltext><url>(?:.*?)<\/url>(?:.*?)<\/urltext>)/g, function(i: any, match: string) {
-   let matched = match.match(/<urltext><url>(.*?)<\/url>(.*)<\/urltext>/);
-  return '<' + matched[1] + '|' + matched[2] + '>';
+  const matched = match.match(/<urltext><url>(.*?)<\/url>(.*)<\/urltext>/);
+  if (matched != null) {
+    return '<' + matched[1] + '|' + matched[2] + '>';
+  }
+  return '';
 }).replace(/<url>(.*?)<\/url>/g, function(i: any, match: string) {
    return '<' + match + '>';
 }).replace(/<ignore>(.*?)<\/ignore>/g, function(i: any, match: string) {
