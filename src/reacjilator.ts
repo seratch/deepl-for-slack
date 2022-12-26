@@ -41,6 +41,7 @@ export async function sayInThread(client: WebClient, channel: string, text: stri
   return await client.chat.postMessage({
     channel,
     text,
+    parse: "none",
     thread_ts: message.thread_ts ? message.thread_ts : message.ts
   });
 }
