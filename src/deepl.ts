@@ -22,32 +22,61 @@ export class DeepLApi {
       url: "/translate",
       data: qs.stringify({
         auth_key: this.authKey,
+
+        // match special parsing
         text: text.replace(/<(.*?)>/g, function(i: any, match: string) {
-          if(match.match(/^!subteam/)) {
-            return '';
-          }
-          if(match.match(/^!/)) {
-            const matched = match.match(/^!([a-z]+)$/);
+
+          // match #channels and @mentions
+          if(match.match(/^[#@].*$/)) {
+            const matched = match.match(/^([#@].*)$/);
             if (matched != null) {
-              return '<ignore>@' + matched[1] + '</ignore>';
+              return '<mkdwn>' + matched[1] + '</mkdwn>';
             }
             return '';
           }
+
+          // match subteam
+          if(match.match(/^!subteam.*$/)) {
+            return '@[subteam mention removed]';
+          }
+
+          // match date formatting
+          if(match.match(/^!date.*$/)) {
+            const matched = match.match(/^(!date.*)$/);
+            if (matched != null) {
+              return '<mkdwn>' + matched[1] + '</mkdwn>';
+            }
+            return '';
+          }
+
+          // match special mention
+          if(match.match(/^!.*$/)) {
+            const matched = match.match(/^!(.*?)(?:\|.*)?$/);
+            if (matched != null) {
+              return '<ignore>@' + matched[1] + '</ignore>';
+            }
+            return '<ignore>@[special mention]</ignore>';
+          }
+
+          // match formatted link
           if(match.match(/^.*?\|.*$/)) {
             const matched = match.match(/^(.*?)\|(.*)$/);
             if (matched != null) {
               return '<a href="' + matched[1] + '">' + matched[2] + '</a>';
             }
             return '';
-          } else {
-            return '<url>' + match + '</url>';
           }
+
+          // fallback (raw link or unforeseen formatting)
+          return '<mkdwn>' + match + '</mkdwn>';
+
+        // match emoji
         }).replace(/:([a-z0-9_-]+):/g, function(i: any, match: string) {
-           return '<emoji>' + match + '</emoji>';
+          return '<emoji>' + match + '</emoji>';
         }),
         target_lang: targetLanguage.toUpperCase(),
         tag_handling: 'xml',
-        ignore_tags: 'emoji,url,ignore'
+        ignore_tags: 'emoji,mkdwn,ignore'
       }),
       headers: {
         "content-type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -55,16 +84,24 @@ export class DeepLApi {
     }).then(response => {
       this.logger.debug(response.data);
       if (response.data.translations && response.data.translations.length > 0) {
-        return response.data.translations[0].text.replace(/<emoji>(.*?)<\/emoji>/g, function(i: any, match: string) {
+
+        // match emoji
+        return response.data.translations[0].text.replace(/<emoji>([a-z0-9_-]+)<\/emoji>/g, function(i: any, match: string) {
           return ':' + match + ':';
-        }).replace(/<url>(.*?)<\/url>/g, function(i: any, match: string) {
+
+        // match <mkdwn>...</mkdwn>
+        }).replace(/<mkdwn>(.*?)<\/mkdwn>/g, function(i: any, match: string) {
           return '<' + match + '>';
+
+        // match <a href="...">...</a>
         }).replace(/(<a href="(?:.*?)">(?:.*?)<\/a>)/g, function(i: any, match: string) {
           const matched = match.match(/<a href="(.*?)">(.*?)<\/a>/);
           if (matched != null) {
             return '<' + matched[1] + '|' + matched[2] + '>';
           }
           return '';
+
+        // match <ignore>...</ignore>
         }).replace(/<ignore>(.*?)<\/ignore>/g, function(i: any, match: string) {
           return match;
         });
