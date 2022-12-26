@@ -30,7 +30,7 @@ export class DeepLApi {
           if(match.match(/^[#@].*$/)) {
             const matched = match.match(/^([#@].*)$/);
             if (matched != null) {
-              return '<mkdwn>' + matched[1] + '</mkdwn>';
+              return '<mrkdwn>' + matched[1] + '</mrkdwn>';
             }
             return '';
           }
@@ -44,7 +44,7 @@ export class DeepLApi {
           if(match.match(/^!date.*$/)) {
             const matched = match.match(/^(!date.*)$/);
             if (matched != null) {
-              return '<mkdwn>' + matched[1] + '</mkdwn>';
+              return '<mrkdwn>' + matched[1] + '</mrkdwn>';
             }
             return '';
           }
@@ -68,7 +68,7 @@ export class DeepLApi {
           }
 
           // fallback (raw link or unforeseen formatting)
-          return '<mkdwn>' + match + '</mkdwn>';
+          return '<mrkdwn>' + match + '</mrkdwn>';
 
         // match emoji
         }).replace(/:([a-z0-9_-]+):/g, function(i: any, match: string) {
@@ -76,7 +76,7 @@ export class DeepLApi {
         }),
         target_lang: targetLanguage.toUpperCase(),
         tag_handling: 'xml',
-        ignore_tags: 'emoji,mkdwn,ignore'
+        ignore_tags: 'emoji,mrkdwn,ignore'
       }),
       headers: {
         "content-type": "application/x-www-form-urlencoded;charset=utf-8"
@@ -89,8 +89,8 @@ export class DeepLApi {
         return response.data.translations[0].text.replace(/<emoji>([a-z0-9_-]+)<\/emoji>/g, function(i: any, match: string) {
           return ':' + match + ':';
 
-        // match <mkdwn>...</mkdwn>
-        }).replace(/<mkdwn>(.*?)<\/mkdwn>/g, function(i: any, match: string) {
+        // match <mrkdwn>...</mrkdwn>
+        }).replace(/<mrkdwn>(.*?)<\/mrkdwn>/g, function(i: any, match: string) {
           return '<' + match + '>';
 
         // match <a href="...">...</a>
