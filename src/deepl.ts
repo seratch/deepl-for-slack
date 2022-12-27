@@ -87,7 +87,7 @@ export class DeepLApi {
           response.data.translations &&
           response.data.translations.length > 0
         ) {
-          // Parse ecoding tags to restore the original special syntax
+          // Parse encoding tags to restore the original special syntax
           return response.data.translations[0].text
             .replace(
               /<emoji>([a-z0-9_-]+)<\/emoji>/g,
