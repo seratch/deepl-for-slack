@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run build && node lib/index.js",
     "local": "npm run build:live",
+    "join-all-public-channels": "npm run build && node lib/join-all-public-channels.js",
     "build": "tsc -p .",
     "build:live": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/index.ts"
   },
