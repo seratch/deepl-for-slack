@@ -22,10 +22,10 @@ export class DeepLApi {
     targetLanguage: string
   ): Promise<string | null> {
     return this.axiosInstance({
+      method: "POST",
       url: "/translate",
-      data: qs.stringify({
-        auth_key: this.authKey,
-        text:
+      data: {
+        text: [
           // Before sending the text to the DeepL API,
           // replace special syntax parts with ignore tags to keep them
           text
@@ -72,13 +72,15 @@ export class DeepLApi {
             })
             .replace(/:([a-z0-9_-]+):/g, (_, match: string) => {
               return "<emoji>" + match + "</emoji>";
-            }),
+            })
+        ],
         target_lang: targetLanguage.toUpperCase(),
         tag_handling: "xml",
-        ignore_tags: "emoji,mrkdwn,ignore",
-      }),
+        ignore_tags: ["emoji", "mrkdwn", "ignore"],
+      },
       headers: {
-        "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+        "Content-Type": "application/json",
+        "Authorization": `DeepL-Auth-Key ${this.authKey}`,
       },
     })
       .then((response) => {
